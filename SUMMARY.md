@@ -4,6 +4,6 @@
 
 ## Group1
 
-* [Note1](group1/note1.md)
-  * [Note2](group1/group2/note2.md)
+* [Note1](group1/note1/README.md)
+  * [Note2](group1/note1/note2.md)
 
