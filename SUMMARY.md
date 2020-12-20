@@ -5,4 +5,5 @@
 ## Group1
 
 * [Note1](group1/note1.md)
+  * [Note1](group1/note2.md)
 
