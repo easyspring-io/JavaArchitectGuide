@@ -2,7 +2,7 @@
 
 ## IOC总结
 
-### 1. IOC概述
+## 1. IOC概述
 
 > 三个问题：
 >
@@ -10,7 +10,7 @@
 > 2. 为什么用它
 > 3. 怎么用
 
-#### 1.1 是什么？
+### 1.1 是什么？
 
 两个概念：**控制反转，依赖注入**
 
@@ -38,21 +38,21 @@
 
 依赖注入：开放一个端口留给A，然后在需要的时候，将B注入到A中。
 
-#### 1.2 为什么用
+### 1.2 为什么用
 
 在上面，笔者已经很清晰的描述了为什么要使用IOC，主要原因就是由于对象之间的耦合。
 
-#### 1.3 怎么用
+### 1.3 怎么用
 
-##### 1.3.1 XML
+#### 1.3.1 XML
 
 通过书写`XML`配置文件，向容器中添加需要注入的`Bean`
 
-##### 1.3.2 Annotation
+#### 1.3.2 Annotation
 
 通过`@Configuration`注解指定配置类。
 
-### 2. IOC架构
+## 2. IOC架构
 
 ![图片](http://qiniu.cdn.easyspring.net/20201223011900.png)
 
@@ -60,7 +60,7 @@
 
 我们接下来一步一步来解读。
 
-#### 2.1 白话版
+### 2.1 白话版
 
 在第一章中我们了解了`IOC`是来帮助我们**管理和创建对象**的。
 
@@ -96,7 +96,7 @@
 
 关于销毁，一般情况下我们通过`ApplicationContext`拿不到其销毁方法，只能通过其子类实现获取，关于销毁同样的流程，先执行一个销毁之前的操作，然后再销毁。
 
-#### 2.2 实际工作流程
+### 2.2 实际工作流程
 
 看过`Spring`源码或者听过的都知道里面有一个方法叫做`refresh`，他完成了好多事情。当然他的行为也代表了整个`IOC`容器加载和实例化对象的过程。**第三章的代码解读中我们仔细看**
 
@@ -118,11 +118,11 @@
 - 完成`Bean`创建
 - 发布相应的事件,监听器
 
-### 3. IOC源码解读
+## 3. IOC源码解读
 
 > 写在之前：IOC的源码比较复杂，所以个人建议视频方式学习，大家可以B站搜索**阁主梧桐(笔者认为讲的不错的一个解读)**，如果大家不喜欢视频的方式，又想深度学习IOC源码那么推荐**程序员囧辉**它的博客对于IOC的讲解非常深入。另外本文接下来的Spring源码，主要是通过图示的方法梳理其流程，作者水平有限。如有错误请留言。
 
-#### 3.1 上下文配置启动
+### 3.1 上下文配置启动
 
 ![图片](http://qiniu.cdn.easyspring.net/20201223011912.png)
 
@@ -130,7 +130,7 @@
 
 **说白了，加载了一个解析配置文件路径的加载器；然后又通过系统环境变量拿到这个配置文件，进行一些配置文件的去空格，转换表达式等等操作(没有进行解析)；最后就是那个被我标成红色东东，refresh方法中它完成了几乎所有的工作。下面细聊**
 
-#### 3.2 refresh
+### 3.2 refresh
 
 ![图片](http://qiniu.cdn.easyspring.net/20201223011920)
 
@@ -138,11 +138,11 @@
 
 **接下来细聊**
 
-##### 3.3.1 prepareRefresh()
+#### 3.3.1 prepareRefresh()
 
 这个方法的主要作用是为应用上下文的刷新做一些准备性的工作。校验资源文件，设置启动时间和活跃状态等。
 
-##### 3.3.2 obtainFreshBeanFactory()
+#### 3.3.2 obtainFreshBeanFactory()
 
 ![图片](http://qiniu.cdn.easyspring.net/20201223011925.png)
 
@@ -164,17 +164,17 @@
 
 ![图片](http://qiniu.cdn.easyspring.net/20201223011939.png)
 
-##### 3.3.3 prepareBeanFactory(beanFactory)
+#### 3.3.3 prepareBeanFactory(beanFactory)
 
 为`BeanFactory`准备一些环境，方便在实例化的时候使用，同时添加容器自己的`BeanPostProcessor`
 
 ![图片](http://qiniu.cdn.easyspring.net/20201223011943.png)
 
-##### 3.3.4 postProcessBeanFactory
+#### 3.3.4 postProcessBeanFactory
 
 留给子类扩展的`BeanFactoryPostProcessor`，
 
-##### 3.3.5 invokeBeanFactoryPostProcessors(beanFactory)
+#### 3.3.5 invokeBeanFactoryPostProcessors(beanFactory)
 
 这个类，涉及到了两个接口。
 
@@ -191,7 +191,7 @@
 
 总逻辑就是先分类，已经处理过的直接跳过，没有处理过的，分类处理，逻辑和上面的相同。
 
-##### 3.3.6 registerBeanPostProcessors
+#### 3.3.6 registerBeanPostProcessors
 
 **这个方法的逻辑和上面的一样，只不过上面是直接执行了BeanFactoryPostProcessor，而这个仅仅注册没执行。**
 
@@ -199,11 +199,11 @@
 
 首先拿到工厂中所有的`BeanPostProcessor`类型的`Bean`，然后分类处理，排序注册。
 
-##### 3.3.7 initMessageSource()
+#### 3.3.7 initMessageSource()
 
 执行国际化内容
 
-##### 3.3.8 initApplicationEventMulticaster
+#### 3.3.8 initApplicationEventMulticaster
 
 创建了一个多播器，为添加`Listener`提供支持。
 
@@ -212,11 +212,11 @@
 - 容器中是否存在`applicationEventMulticaster`，如果存在直接注册
 - 如果不存在，创建一个`SimpleApplicationEventMulticaster`，注册到容器中。
 
-##### 3.3.9 onRefresh()
+#### 3.3.9 onRefresh()
 
 子类扩展
 
-##### 3.3.10 registerListeners()
+#### 3.3.10 registerListeners()
 
 观察者模式的实现
 
@@ -244,7 +244,7 @@ protected void registerListeners() {
  }
 ```
 
-##### 3.3.11 finishBeanFactoryInitialization
+#### 3.3.11 finishBeanFactoryInitialization
 
 > 这一部分的内容太多了，所以采用代码和图解的方式来讲解。
 
@@ -579,7 +579,7 @@ Spring提供了三种方式创建对象的包装：
 
 ![img](data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==)
 
-##### 3.3.12 finishRefresh
+#### 3.3.12 finishRefresh
 
 这个方法进行了一系列的资源清理和
 
@@ -604,9 +604,9 @@ protected void finishRefresh() {
 
 **initLifecycleProcessor，这个方法极具简单，就看一下当前Bean中是否存在生命周期处理器，如果存在直接使用这个，如果不存在则创建一个默认的，并且注册为一个单例的扔到容器中。**
 
-### 4. 常见题目
+## 4. 常见题目
 
-#### 4.1 Bean的生命周期？
+### 4.1 Bean的生命周期？
 
 > Spring官方解释在BeanDefinition接口的注释里
 
@@ -621,13 +621,13 @@ protected void finishRefresh() {
 - 调用`DestructionAwareBeanPostProcessors`接口的`postProcessBeforeDestruction`方法
 - 调用`destory`方法
 
-#### 4.2 FactoryBean和BeanFactory的区别
+### 4.2 FactoryBean和BeanFactory的区别
 
 答：`BeanFactory`是`Spring`默认生产对象的工厂。
 
 `FactoryBean`是`Spring`提供的一个生产特定类型和特定对象的工厂。例如`Mybatis-spring`中的`SqlSessionFactoryBean`就是通过这种方法创建的。
 
-#### 4.3 什么是循环依赖？Spring如何处理循环依赖的？
+### 4.3 什么是循环依赖？Spring如何处理循环依赖的？
 
 答：循环依赖是指：在创建A对象的时候需要注入B对象；在创建B对象的时候需要注入A对象，两者互相依赖。
 
@@ -646,21 +646,21 @@ protected void finishRefresh() {
 
 > 使用**三太子敖丙**的一句话：**解决循环依赖的过程就是力扣中的第一题两数之和的过程**
 
-#### 4.4 什么是IOC
+### 4.4 什么是IOC
 
 答：IOC存在两个点：
 
 - 控制反转。将常见对象的控制权交给第三方，这里的第三方就是`Spring`
 - 依赖注入。在类中需要使用到的对象，全部通过反射从第三方容器注入而不是自己创建。这里的第三方容器即`Spring`
 
-#### 4.5 ApplicationContext和BeanFactory的区别
+### 4.5 ApplicationContext和BeanFactory的区别
 
 答：
 
 - `ApplicationContext`采用了立即加载，即加载配置文件的时候就创建了对象。`BeanFactory`采用了延时加载的方式，使用的时候才创建。
 - 对于`BeanPostProcessor`和`BeanFactoryProcessor`而言，`BeanFactory`是手动注册，`ApplicationContext`采用了自动注册。
 
-#### 4.6 Spring 框架中都用到了哪些设计模式？
+### 4.6 Spring 框架中都用到了哪些设计模式？
 
 答：
 
