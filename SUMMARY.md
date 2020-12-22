@@ -5,15 +5,12 @@
 ## 数据结构与算法
 
 * 数据结构
-
   * 线性表
   * 散列表
   * 树
   * 图
   * 其他
-
 * 算法
-
   * 基本算法思想
   * 复杂度分析
     * [看动画轻松理解时间复杂度（一）](数据结构与算法/算法/复杂度/看动画轻松理解时间复杂度（一）.md)
@@ -22,5 +19,62 @@
   * 字符串匹配
   * 排序算法
 
-  
+## 基础知识
 
+* 计算机基础
+* Linux
+
+## 设计模式
+
+* 23种设计模式
+* 常用设计模式
+* AOP
+* IOC
+* Reactor
+
+## Java
+
+* 容器
+* 多线程与高并发
+* IO
+* JVM
+
+## 数据库
+
+* MySQL
+* Redis
+* Memeracach
+* MongoDB
+
+## 框架
+
+* Spring
+* SpringBoot
+* MyBatis
+
+## 架构
+
+* 分布式
+  * Zookeeper
+  * RabbitMQ
+  * MongoDB
+  * Kafka
+  * Netty
+  * Dubbo
+  * ElasticSearch
+  * ELK
+* 微服务
+* 高并发
+* 监控
+* 负载均衡
+* 
+
+## 网络编程
+
+## 工具
+
+* Git
+* Maven
+* Gradle
+
+## 网络安全
