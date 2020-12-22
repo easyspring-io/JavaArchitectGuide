@@ -220,7 +220,7 @@
 
 观察者模式的实现
 
-```
+```java
 protected void registerListeners() {
   // 拿到当前容器中的监听器，注册到多播器中
   for (ApplicationListener<?> listener : getApplicationListeners()) {
@@ -248,7 +248,7 @@ protected void registerListeners() {
 
 > 这一部分的内容太多了，所以采用代码和图解的方式来讲解。
 
-```
+```java
  /**
   * Finish the initialization of this context's bean factory,
   * initializing all remaining singleton beans.
@@ -308,7 +308,7 @@ protected void registerListeners() {
 
 **简单介绍一下：**`FactoryBean`是让开发者创建自己需要`Bean`接口。内部提供了三个方法
 
-```
+```java
 T getObject() throws Exception;//返回的Bean信息
 Class<?> getObjectType();//返回的Bean类型
 default boolean isSingleton() {return true;}//是否单例
@@ -316,7 +316,7 @@ default boolean isSingleton() {return true;}//是否单例
 
 当我们通过`GetBean`直接该`Bean`的时候，获取到的是该工厂指定返回的`Bean`类型。如果想要获取该`Bean`本身，需要通过一个前缀获得`&`
 
-```
+```java
 @Override
 public boolean isFactoryBean(String name) throws NoSuchBeanDefinitionException {
  String beanName = transformedBeanName(name); //解析真正的BeanName
@@ -337,7 +337,7 @@ public boolean isFactoryBean(String name) throws NoSuchBeanDefinitionException {
 
 **再来看一个点,这个就是从容器中获取Bean的主要方法，也是解决循环依赖的逻辑**
 
-```
+```java
 protected Object getSingleton(String beanName, boolean allowEarlyReference) {
     //查看当前容器中是否存在该Bean
   Object singletonObject = this.singletonObjects.get(beanName);
@@ -370,7 +370,7 @@ protected Object getSingleton(String beanName, boolean allowEarlyReference) {
 
 它引入了一个三级缓存的概念
 
-```
+```java
 /**存放了所有的单例Bean */
 private final Map<String, Object> singletonObjects = new ConcurrentHashMap<>(256);
 
@@ -381,8 +381,7 @@ private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(1
 private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
 //正在创建的Bean
-private final Set<String> singletonsCurrentlyInCreation =
-   Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 ```
 
 在发生循环引用的时候，它首先通过`ObejctFactory`工厂将`Bean`创建出来，**此时的对象并没有进行属性赋值，仅仅在堆中开辟了空间。**然后将此时的`Bean`添加到`earlySingletonObjects`容器里，**也就是说这个容器中保存的Bean都是半成品。**而在之后的属性赋值中，由于对象为单例的，所以其引用地址不会发生变化，即对象最终是完整的。
@@ -423,7 +422,7 @@ private final Set<String> singletonsCurrentlyInCreation =
 
 接下来我们来聊一下这个玩意——**resolveBeforeInstantiation**
 
-```
+```java
 protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition mbd) {
   Object bean = null;
   if (!Boolean.FALSE.equals(mbd.beforeInstantiationResolved)) {
@@ -450,7 +449,7 @@ protected Object resolveBeforeInstantiation(String beanName, RootBeanDefinition 
 
 来吧，继续，看一下那个前置处理器逻辑
 
-```
+```java
 protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, String beanName) {
   for (BeanPostProcessor bp : getBeanPostProcessors()) {
             //拿到工厂中的所有的BeanPostProcessor
@@ -486,7 +485,7 @@ protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, 
 
 先看循环依赖吧
 
-```
+```java
 if (earlySingletonExposure) {
     //从早期的Bean容器中拿到实例对象，此时的Bean必然存在循环依赖
     Object earlySingletonReference = getSingleton(beanName, false);
@@ -583,7 +582,7 @@ Spring提供了三种方式创建对象的包装：
 
 这个方法进行了一系列的资源清理和
 
-```
+```java
 protected void finishRefresh() {
   // 清空上下文资源缓存
   clearResourceCaches();
@@ -599,7 +598,7 @@ protected void finishRefresh() {
 
   // Participate in LiveBeansView MBean, if active.
   LiveBeansView.registerApplicationContext(this);
- }
+}
 ```
 
 **initLifecycleProcessor，这个方法极具简单，就看一下当前Bean中是否存在生命周期处理器，如果存在直接使用这个，如果不存在则创建一个默认的，并且注册为一个单例的扔到容器中。**
@@ -674,10 +673,10 @@ protected void finishRefresh() {
 
 
 
+
+
 本文转自：公众号 MakerStack
-
 原名：7000字长文带你深入IOC加载流程
-
 原文地址：https://mp.weixin.qq.com/s/SqToY3Wd7BIHfBdbp1eYEg
 
 
