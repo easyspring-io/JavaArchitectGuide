@@ -19,10 +19,11 @@
   * 字符串匹配
   * 排序算法
 
-## 基础知识
+## 通用知识
 
 * 计算机基础
 * Linux
+* UML
 
 ## 设计模式
 
@@ -54,7 +55,7 @@
 
 ## 架构
 
-* 分布式
+* 中间件
   * Zookeeper
   * RabbitMQ
   * MongoDB
@@ -63,18 +64,25 @@
   * Dubbo
   * ElasticSearch
   * ELK
+* 分布式
 * 微服务
-* 高并发
 * 监控
 * 负载均衡
-* 
 
-## 网络编程
+## 网络
+
+* 网络协议
+  * OSI
+  * TCP/IP
+  * HTTP
+  * HTTP2
+  * HTTPS
+* 网络模型
+  * Epoll
 
 ## 工具
 
+* IDEA
 * Git
 * Maven
 * Gradle
-
-## 网络安全
