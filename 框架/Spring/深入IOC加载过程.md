@@ -1,6 +1,4 @@
-# 深入IOC加载流程
-
-## IOC总结
+# 深入IOC加载过程
 
 ## 1. IOC概述
 
@@ -54,7 +52,7 @@
 
 ## 2. IOC架构
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011900.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160712.png)
 
 一个图搞定，**这个就是`IOC`的架构思路，这不是其执行流程图**。
 
@@ -70,9 +68,9 @@
 
 答案就是工厂模式。`Spring`默认的工厂是`DefaultListableBeanFactory`，没错，`Spring`中的所有对象(容器对象和我们自己创建的对象)都是由他创建的。**大批量生产对象**
 
-这个时候又有了一个问题，我们不想通过`BeanFactory`直接生产了，需要对这个工厂进行一些特定处理，于是出现了`BeanFactoryPostProcessor`，用来对工厂做一些特定的处理。**我们自己可以通过实现这个接口，进行自定义BeanFactory**。又有兄弟说了：**我想单独创建一些我喜欢的对象![图片](https://mmbiz.qpic.cn/mmbiz_png/uXib9NnTTFxyx83bjQicHibITQ272Dsm7TQQMrSGHN3Xxuvnz1HyDQDTKD4lkECdCYKTIiaG2DAAQDpjlrYBVKSenQ/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)，安排**，`FactoryBean`诞生了，它可以帮助我们创建一个我们需要的对象（**第四部分详细解释他们之间的区别**）。
+这个时候又有了一个问题，我们不想通过`BeanFactory`直接生产了，需要对这个工厂进行一些特定处理，于是出现了`BeanFactoryPostProcessor`，用来对工厂做一些特定的处理。**我们自己可以通过实现这个接口，进行自定义BeanFactory**。又有兄弟说了：**我想单独创建一些我喜欢的对象，安排**，`FactoryBean`诞生了，它可以帮助我们创建一个我们需要的对象（**第四部分详细解释他们之间的区别**）。
 
-**那又有兄弟说了：我想让统一的对象创建之前按照我的方式进行一些特殊的行为，简单，安排![图片](https://mmbiz.qpic.cn/mmbiz_png/uXib9NnTTFxyx83bjQicHibITQ272Dsm7TQba09pOZRaWosgkfnkRjH6kXLp98VjHFZS496qLFFyKm2tKbA38xWBw/640?wx_fmt=png&tp=webp&wxfrom=5&wx_lazy=1&wx_co=1)**
+**那又有兄弟说了：我想让统一的对象创建之前按照我的方式进行一些特殊的行为，简单，安排**
 
 `BeanPostProcessor`出现了，他提供了两个方法：一个在对象实例化之后初始化之前，执行内部的`Before`方法，在初始化之后，执行`After`方法。（**Bean生命周期，第四部分详解**）
 
@@ -100,7 +98,7 @@
 
 看过`Spring`源码或者听过的都知道里面有一个方法叫做`refresh`，他完成了好多事情。当然他的行为也代表了整个`IOC`容器加载和实例化对象的过程。**第三章的代码解读中我们仔细看**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011906.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160736.png)
 
 **执行过程：**
 
@@ -124,7 +122,7 @@
 
 ### 3.1 上下文配置启动
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011912.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160744.png)
 
 在创建`ClassPathXmlApplicationContext`的时候，构造方法中执行了这些方法。
 
@@ -132,7 +130,7 @@
 
 ### 3.2 refresh
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011920)
+![图片](http://qiniu.cdn.easyspring.net/20201225161046)
 
 这个方法几乎完成了所有的操作，创建工厂，执行`Processor`等等，实例化对象，开启事件监听等等。
 
@@ -144,17 +142,17 @@
 
 #### 3.3.2 obtainFreshBeanFactory()
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011925.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160750.png)
 
 **可以get到，它主要就是创建了一个工厂`BeanFactory`，并且解析了配置文件，加载了`Bean`定义信息（面试的时候直接答这个点就够了，如果想说的可以将下面的bean信息加载聊聊）**
 
 **没错，标红的就是咱接下来细聊的点**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011930)
+![图片](http://qiniu.cdn.easyspring.net/20201225160800)
 
 **这个就是加载配置文件的过程，注意：此时仍然没有解析，解析在标红的下面**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011934)
+![图片](http://qiniu.cdn.easyspring.net/20201225160808)
 
 **这个就是读取的过程，具体解析流程来自`parse`中，这个直接调用了`Java`中的解析`XML`的类库，有兴趣自行翻阅，最后返回了一个Document对象。**
 
@@ -162,13 +160,13 @@
 
 **此时所有的Bean定义信息都被保存到了`BeanDefinitionRegistry`接口，然后走子类`DefaultListableBeanFactory`工厂的注册方法**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011939.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160814.png)
 
 #### 3.3.3 prepareBeanFactory(beanFactory)
 
 为`BeanFactory`准备一些环境，方便在实例化的时候使用，同时添加容器自己的`BeanPostProcessor`
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011943.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160820.png)
 
 #### 3.3.4 postProcessBeanFactory
 
@@ -185,7 +183,7 @@
 
 **下图是`BeanDefinitionRegistryPostProcessor`接口的处理过程**
 
-![img](data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==)
+![图片](http://qiniu.cdn.easyspring.net/20201225160826.png)
 
 **BeanFactoryPostProcessor的处理逻辑**
 
@@ -195,7 +193,7 @@
 
 **这个方法的逻辑和上面的一样，只不过上面是直接执行了BeanFactoryPostProcessor，而这个仅仅注册没执行。**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011951.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160832.png)
 
 首先拿到工厂中所有的`BeanPostProcessor`类型的`Bean`，然后分类处理，排序注册。
 
@@ -288,7 +286,7 @@ protected void registerListeners() {
 
 **下图是创建Bean的主要流程**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223011957.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160839.png)
 
 **按照途中的序号一个一个说：**
 
@@ -302,7 +300,7 @@ protected void registerListeners() {
 
 **上面的流程也是源码中的执行流程**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223012003.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160844.png)
 
 1. `isFactoryBean`。判断是否为`FactoryBean`
 
@@ -381,7 +379,8 @@ private final Map<String, ObjectFactory<?>> singletonFactories = new HashMap<>(1
 private final Map<String, Object> earlySingletonObjects = new HashMap<>(16);
 
 //正在创建的Bean
-private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFromMap(new ConcurrentHashMap<>(16));
+private final Set<String> singletonsCurrentlyInCreation =
+   Collections.newSetFromMap(new ConcurrentHashMap<>(16));
 ```
 
 在发生循环引用的时候，它首先通过`ObejctFactory`工厂将`Bean`创建出来，**此时的对象并没有进行属性赋值，仅仅在堆中开辟了空间。**然后将此时的`Bean`添加到`earlySingletonObjects`容器里，**也就是说这个容器中保存的Bean都是半成品。**而在之后的属性赋值中，由于对象为单例的，所以其引用地址不会发生变化，即对象最终是完整的。
@@ -390,7 +389,7 @@ private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFrom
 
 **先来看一下它整体的一个流程**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223012010)
+![图片](http://qiniu.cdn.easyspring.net/20201225160853)
 
 **它的主要逻辑是：先拿到当前要实例化的Bean的真实名字，主要是为了处理`FactoryBean`，拿到以后，从当前容器中看是否已经创建过该Bean，如果存在直接返回。**
 
@@ -412,7 +411,7 @@ private final Set<String> singletonsCurrentlyInCreation = Collections.newSetFrom
 
 接下来看一眼`CreateBean`的执行
 
-![img](data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==)
+![图片](http://qiniu.cdn.easyspring.net/20201225160903.png)
 
 **这个方法主要完成的事情是：通过Bean的名字拿到对应的Class对象；如果当前Bean获取到的Class对象不为空且该RootDefintiton可以直接获取到该Bean，克隆一份Bean定义信息，方便之后使用。**
 
@@ -471,7 +470,7 @@ protected Object applyBeanPostProcessorsBeforeInstantiation(Class<?> beanClass, 
 
 接下来继续我们的正题：`doCreateBean`
 
-![图片](http://qiniu.cdn.easyspring.net/20201223012020)
+![图片](http://qiniu.cdn.easyspring.net/20201225160908)
 
 其大致流程如上图：
 
@@ -523,7 +522,7 @@ try {
 
 **接着来，createBeanInstance**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223012026.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160916.png)
 
 Spring提供了三种方式创建对象的包装：
 
@@ -556,13 +555,13 @@ Spring提供了三种方式创建对象的包装：
 
 **属性赋值**
 
-![图片](http://qiniu.cdn.easyspring.net/20201223012032)
+![图片](http://qiniu.cdn.easyspring.net/20201225160921)
 
 ------
 
 接下来看执行初始化方法，就是调用`BeanPostprocessor，init`等方法
 
-![图片](http://qiniu.cdn.easyspring.net/20201223012036.png)
+![图片](http://qiniu.cdn.easyspring.net/20201225160926.png)
 
 **这个就是这个方法的执行流程图，相信到这个地方，大家应该对于为什么BeanPostProcessor的before方法会在init方法执行了解了。这个方法的作用仅仅是用来进行一个生命周期的打印，对象在之前已经创建了。**
 
@@ -576,7 +575,7 @@ Spring提供了三种方式创建对象的包装：
 
 **在封装为`DisposableBeanAdapter`的过程中，会首先判断该Bean中是否存在destroy方法，然后给赋值给destroyMethodName变量。再次判断这个方法的参数，如果参数的个数大于1，则抛出异常**
 
-![img](data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVQImWNgYGBgAAAABQABh6FO1AAAAABJRU5ErkJggg==)
+![图片](http://qiniu.cdn.easyspring.net/20201225160933.png)
 
 #### 3.3.12 finishRefresh
 
@@ -598,7 +597,7 @@ protected void finishRefresh() {
 
   // Participate in LiveBeansView MBean, if active.
   LiveBeansView.registerApplicationContext(this);
-}
+ }
 ```
 
 **initLifecycleProcessor，这个方法极具简单，就看一下当前Bean中是否存在生命周期处理器，如果存在直接使用这个，如果不存在则创建一个默认的，并且注册为一个单例的扔到容器中。**
@@ -670,8 +669,6 @@ protected void finishRefresh() {
 - 模板方法模式。**JDBCTemplate**
 - 观察者模式。**各种事件监听**
 - ……
-
-
 
 
 
