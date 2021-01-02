@@ -28,6 +28,7 @@ Zookeeper 的 Leader 选举发生在两个阶段：
 在选举状态中，所有 Zookeeper 服务的状态都会变为 Looking 选举状态，每台 Zookeeper 服务都把自己当作 Leader 候选者向其它 Zookeeper 服务发送自己的选票信息。我们这里以 3 个 Zookeeper 服务为例子：
 
 ![Zookeeper第一轮选举](http://qiniu.cdn.easyspring.net/20210102235556.jpg)
+
 选票信息包括 Zookeeper 的服务ID，也就是 myid 文件中的内容，还有就是 Zookeeper 服务最新的事务ID，也就是 ZXID，当然初次启动的 Zookeeper 服务的事务 ID 都是相同的 。发送选票信息的同时，也会接收到其它 Zookeeper 服务发送的选票信息。
 
 > **Tips：** ZXID：节点本地的事务编号，由64位的数字组成，包含纪元值（ epoch ）和计数两部分。
@@ -37,9 +38,11 @@ Zookeeper 的 Leader 选举发生在两个阶段：
 在第二轮选举之前，Zookeeper 服务会把自己的选票信息和接收到的其它 Zookeeper 服务的选票信息一起做比较，产生新的选票信息，首先比较 ZXID，选取拥有较大的 ZXID 的选票信息作为自己新的选票，如果 ZXID 相同，则会比较服务ID，也就是 myid 的值，选取拥有较大的 myid 值的选票信息作为自己新的选票。
 
 ![Zookeeper选票更新](http://qiniu.cdn.easyspring.net/20210102235603.jpg)
+
 产生了新的选票之后，发起第二轮投票，此时 Zookeeper 服务器会统计所有服务器发出的选票，如果超过半数的 Zookeeper 服务的选票信息是相同的，那么该选票中的 myid 值相对应的 Zookeeper 服务就当选为 Leader 服务，其状态变为 Leading，其它 Zookeeper 服务的状态由 Looking 状态变为 Following，也就是 Follower 服务。如果选票的统计未达到半数以上，则更新各个节点的选票信息，重新开始新一轮的选举，直到选举出 Leader。
 
 ![Zookeeper第二轮选举](http://qiniu.cdn.easyspring.net/20210102235609.jpg)
+
 以上就是 Zookeeper 服务启动时的 Leader 选举的过程。接下来我们讲解 Zookeeper 在崩溃恢复阶段的 Leader 选举。
 
 

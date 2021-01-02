@@ -16,6 +16,7 @@
 什么是 Zookeeper 呢？我们先来看一下 [Zookeeper 的官网](https://zookeeper.apache.org/)介绍：
 
 ![Zookeeper 的官网介绍](http://qiniu.cdn.easyspring.net/20210102232156.jpg)
+
 原文直接翻译过来的概念很抽象，那我们简单的解释一下。在分布式环境中，存在着大量的服务，服务与服务之间难以做到彼此协调，也不便于开发人员对服务进行维护管理，而 Zookeeper 使用它简单的结构和 API ，协调服务与服务之间的关系，让开发人员专注于应用程序的核心业务逻辑，更方便的对应用程序的服务进行管理维护。
 所以我们可以把 Zookeeper 叫做**分布式协调服务**。
 
@@ -127,6 +128,7 @@
 Zookeeper 数据模型的结构是基于节点的，我们把这种节点叫做 **Znode** ，具体结构我们来看下图：
 
 ![Zookeeper 数据模型的结构](http://qiniu.cdn.easyspring.net/20210102232827.jpg)
+
 我们可以看见，这种结构和数据结构中的树类似，也和文件系统的目录类似。我们知道文件系统的引用是非常方便的，那么我们想引用 Zookeeper 某个节点，那么我们该如何引用呢？
 我们可以通过路径引用的方式来访问 Znode 节点：
 
@@ -148,6 +150,7 @@ Zookeeper 数据模型的结构是基于节点的，我们把这种节点叫做 
 我们先来了解 Znode 节点中由哪些元素组成，请看下图：
 
 ![Znode 的元素组成](http://qiniu.cdn.easyspring.net/20210102232848.jpg)
+
 我们可以看到，Znode 节点中由 4 种元素组成，接下来我们来分别介绍一下每个元素具体是什么。
 Znode 节点元素介绍：
 
@@ -1131,6 +1134,7 @@ public List<String> watchForChilds(final String path);
 
 
 ![图片描述](http://qiniu.cdn.easyspring.net/20210102233250.jpg)
+
 本节我们学习了如何使用 ZkClient 的 API 对 Zookeeper 服务节点的操作，还介绍了一些常用的 API。以下是本节内容的总结：
 
 1. 使用 Spring Boot 集成 ZkClient 。
@@ -1155,6 +1159,7 @@ public List<String> watchForChilds(final String path);
 我们来看一下 Curator 的官网介绍：
 
 ![Curator 的官网介绍](http://qiniu.cdn.easyspring.net/20210102233304.jpg)
+
 Curator 是 Netflix 公司开源的一套 Zookeeper 客户端框架，后来捐献给 Apache 成为顶级的开源项目。
 Curator 和 ZkClient 同样简化了 Zookeeper 原生 API 的开发工作，而 Curator 提供了一套易用性和可读性更强的 Fluent 风格的客户端 API ，还提供了 Zookeeper 各种应用场景的抽象封装，比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等。
 Curator 相较其它 Zookeeper 客户端功能更强大，应用更广泛，使用更便捷，所以它能成为当下最流行的 Zookeeper 的 Java 客户端之一。
@@ -1698,6 +1703,7 @@ void contextLoads() throws Exception {
 首先我们从 Zookeeper 的通信协议开始说起。我们都知道最常用的网络通信协议 TCP/IP 协议，而 Zookeeper 就是基于 TCP/IP 协议实现了自己的通信方式。
 
 ![Zookeeper 的通信协议](http://qiniu.cdn.easyspring.net/20210102233802.jpg)
+
 Zookeeper 的通信协议分为两部分，请求协议和响应协议，接下来我们分别进行介绍。
 
 
@@ -2145,6 +2151,7 @@ Watch 的运行过程分为 4 部分，分别是：客户端注册 Watch 、服�
 ACL 全称 Access Control Lists，访问控制列表。一个 Znode 的 ACL 可以分为 3 部分：
 
 ![Zookeeper ACL 组成](http://qiniu.cdn.easyspring.net/20210102234124.jpg)
+
 ACL 就是由以上 3 部分组成 **Scheme:ID:Permission** 这种形式的访问控制信息，接下来我们来接介绍这 3 部分分别代表什么意思：
 
 - 授权模式 Scheme：
@@ -2365,6 +2372,7 @@ public void addAuthInfo(String scheme, byte[] auth) {
 我们想要使用 Zookeeper 客户端向 Zookeeper 服务端发送请求，我们就需要把请求发送的 Java 对象转换为字节流的形式，这个转换的过程就是序列化。相对来说，把字节流转换为 Java 对象的过程就是反序列化。
 
 ![Zookeeper 序列化](http://qiniu.cdn.easyspring.net/20210102234140.jpg)
+
 那么我们什么时候使用序列化呢？
 
 1. 对象需要持久化时；
