@@ -1,5 +1,6 @@
 # Zookeeper 简介
 
+
 ![图片描述](http://qiniu.cdn.easyspring.net/20210102232150.jpg)
 
 
@@ -13,6 +14,7 @@
 ## 2. 什么是 Zookeeper
 
 什么是 Zookeeper 呢？我们先来看一下 [Zookeeper 的官网](https://zookeeper.apache.org/)介绍：
+
 ![Zookeeper 的官网介绍](http://qiniu.cdn.easyspring.net/20210102232156.jpg)
 原文直接翻译过来的概念很抽象，那我们简单的解释一下。在分布式环境中，存在着大量的服务，服务与服务之间难以做到彼此协调，也不便于开发人员对服务进行维护管理，而 Zookeeper 使用它简单的结构和 API ，协调服务与服务之间的关系，让开发人员专注于应用程序的核心业务逻辑，更方便的对应用程序的服务进行管理维护。
 所以我们可以把 Zookeeper 叫做**分布式协调服务**。
@@ -123,6 +125,7 @@
 ## 2. Zookeeper 数据模型的结构
 
 Zookeeper 数据模型的结构是基于节点的，我们把这种节点叫做 **Znode** ，具体结构我们来看下图：
+
 ![Zookeeper 数据模型的结构](http://qiniu.cdn.easyspring.net/20210102232827.jpg)
 我们可以看见，这种结构和数据结构中的树类似，也和文件系统的目录类似。我们知道文件系统的引用是非常方便的，那么我们想引用 Zookeeper 某个节点，那么我们该如何引用呢？
 我们可以通过路径引用的方式来访问 Znode 节点：
@@ -143,6 +146,7 @@ Zookeeper 数据模型的结构是基于节点的，我们把这种节点叫做 
 ## 3. Znode 的元素组成
 
 我们先来了解 Znode 节点中由哪些元素组成，请看下图：
+
 ![Znode 的元素组成](http://qiniu.cdn.easyspring.net/20210102232848.jpg)
 我们可以看到，Znode 节点中由 4 种元素组成，接下来我们来分别介绍一下每个元素具体是什么。
 Znode 节点元素介绍：
@@ -499,6 +503,7 @@ Zookeeper 服务初始化的过程主要是实例化服务对象，下面我们�
 ### 4.3 Zookeeper 服务请求处理器
 
 不同的客户端发送的请求， ZooKeeper 服务会使用不同的请求处理器来处理不同的逻辑。在单机模式下的 Zookeeper 服务，使用了 3 种请求处理器：
+
 ![请求处理器](http://qiniu.cdn.easyspring.net/20210102232906.jpg)
 
 1. PrepRequestProcessor
@@ -538,6 +543,7 @@ Zookeeper 服务初始化的过程主要是实例化服务对象，下面我们�
 在上一节中，我们学习了 Zookeeper 的单机模式，我们可以在此基础上进行 Zookeeper 集群模式的部署。Zookeeper 集群的数量通常是大于等于 3 的奇数，比如 3、5、7，但也不宜太多，太多的集群数量会影响集群之间的同步性能。这里我们以 3 的集群数量来进行讲解。
 
 > **Tips：** Zookeeper 集群的数量为什么需要奇数个呢？如果采用偶数，在 Leader 节点选举投票时，有可能会产生两个 Leader 节点，两个 Leader 都不能满足大多数选票的原则，这时就会出现**脑裂**问题。
+
 
 ![集群模式](http://qiniu.cdn.easyspring.net/20210102232914.jpg)
 
@@ -739,6 +745,7 @@ ls /
 ## 4. Zookeeper 集群的启动流程
 
 Zookeeper 集群启动时，首先会通过配置文件判断 Zookeeper 的启动方式是否为集群模式，如果为集群模式，则通过配置文件进行初始化工作，然后集群的节点进行 Leader 选举，选举完毕后， Follower 节点与 Leader 节点进行数据同步，完成同步后就可以启动 Leader 和 Follower 实例了。
+
 ![ Zookeeper 集群的启动流程](http://qiniu.cdn.easyspring.net/20210102233044.jpg)
 
 
@@ -1122,6 +1129,7 @@ public List<String> watchForChilds(final String path);
 
 ## 4. 总结
 
+
 ![图片描述](http://qiniu.cdn.easyspring.net/20210102233250.jpg)
 本节我们学习了如何使用 ZkClient 的 API 对 Zookeeper 服务节点的操作，还介绍了一些常用的 API。以下是本节内容的总结：
 
@@ -1145,6 +1153,7 @@ public List<String> watchForChilds(final String path);
 ## 2. Curator 简介
 
 我们来看一下 Curator 的官网介绍：
+
 ![Curator 的官网介绍](http://qiniu.cdn.easyspring.net/20210102233304.jpg)
 Curator 是 Netflix 公司开源的一套 Zookeeper 客户端框架，后来捐献给 Apache 成为顶级的开源项目。
 Curator 和 ZkClient 同样简化了 Zookeeper 原生 API 的开发工作，而 Curator 提供了一套易用性和可读性更强的 Fluent 风格的客户端 API ，还提供了 Zookeeper 各种应用场景的抽象封装，比如：分布式锁服务、集群领导选举、共享计数器、缓存机制、分布式队列等。
@@ -1687,6 +1696,7 @@ void contextLoads() throws Exception {
 ## 2. Zookeeper 的通信协议
 
 首先我们从 Zookeeper 的通信协议开始说起。我们都知道最常用的网络通信协议 TCP/IP 协议，而 Zookeeper 就是基于 TCP/IP 协议实现了自己的通信方式。
+
 ![Zookeeper 的通信协议](http://qiniu.cdn.easyspring.net/20210102233802.jpg)
 Zookeeper 的通信协议分为两部分，请求协议和响应协议，接下来我们分别进行介绍。
 
@@ -1835,6 +1845,7 @@ Zookeeper 是一个 C/S 架构的服务，也就是 Client — Server 的形式�
 ### 3.1 Session 的结构
 
 会话 Session 的结构包括会话ID、会话超时时间、会话关闭状态 3 个属性：
+
 ![Session 的结构](http://qiniu.cdn.easyspring.net/20210102233811.jpg)
 
 - **SessionID：** 会话的唯一标识，由 Zookeeper 自动分配。
@@ -2096,6 +2107,7 @@ forDeletes 原节点：ChildData{path='/mooc', stat=2760,2761,1598451457977,1598
 
 在介绍 Watch 的原理之前，我们先熟悉一个概念：Zookeeper 客户端对 Znode 的写操作，也就是新增节点、更新节点、删除节点这些操作，默认会开启监听；Zookeeper 客户端对 Znode 的读操作，也就是查询节点数据、查询节点是否存在、查询子节点等操作，需要手动设置开启监听。这也是为什么在 GetDataRequest 请求体中会有 watch 这个属性的原因。
 Watch 的运行过程分为 4 部分，分别是：客户端注册 Watch 、服务端注册 Watch、服务端触发 Watch、客户端处理回调。
+
 ![Watch 的运行过程](http://qiniu.cdn.easyspring.net/20210102234119.jpg)
 
 - **客户端注册 Watch**
@@ -2131,6 +2143,7 @@ Watch 的运行过程分为 4 部分，分别是：客户端注册 Watch 、服�
 ## 2. Zookeeper ACL 组成
 
 ACL 全称 Access Control Lists，访问控制列表。一个 Znode 的 ACL 可以分为 3 部分：
+
 ![Zookeeper ACL 组成](http://qiniu.cdn.easyspring.net/20210102234124.jpg)
 ACL 就是由以上 3 部分组成 **Scheme:ID:Permission** 这种形式的访问控制信息，接下来我们来接介绍这 3 部分分别代表什么意思：
 
@@ -2350,6 +2363,7 @@ public void addAuthInfo(String scheme, byte[] auth) {
 
 在 Zookeeper 的通信与会话一节中，我们学习了 Zookeeper 使用的是基于 TCP 的通信协议，TCP 协议是一种面向连接的、可靠的、基于字节流的通信协议。
 我们想要使用 Zookeeper 客户端向 Zookeeper 服务端发送请求，我们就需要把请求发送的 Java 对象转换为字节流的形式，这个转换的过程就是序列化。相对来说，把字节流转换为 Java 对象的过程就是反序列化。
+
 ![Zookeeper 序列化](http://qiniu.cdn.easyspring.net/20210102234140.jpg)
 那么我们什么时候使用序列化呢？
 
