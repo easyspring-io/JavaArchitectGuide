@@ -60,7 +60,8 @@
 
 * 中间件
   * Zookeeper
-    *  [Zookeeper 入门教程](架构/中间件/Zookeeper/Zookeeper 入门教程.md) 
+    *  [Zookeeper入门教程](架构/中间件/Zookeeper/Zookeeper入门教程.md)
+    *  [Zookeeper应用原理](架构/中间件/Zookeeper/Zookeeper应用原理.md)
   * RabbitMQ
   * MongoDB
   * Kafka

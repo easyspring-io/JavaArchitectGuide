@@ -1,5 +1,3 @@
-# Zookeeper 入门教程
-
 # Zookeeper 简介
 
 ![图片描述](http://qiniu.cdn.easyspring.net/20210102232150.jpg)
